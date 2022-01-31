@@ -13,8 +13,6 @@ from rest_framework import status
 from django.http import Http404
 
 
-
-
 class MovieInfoAPIView(APIView):
 
     def get(self,request):
@@ -86,6 +84,8 @@ class MovieDetailAPIView(APIView):
         movie = self.get_object(pk)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+        
              
                   
                 

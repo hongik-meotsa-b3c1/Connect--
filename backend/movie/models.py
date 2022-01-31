@@ -16,13 +16,14 @@ class MovieInfo(models.Model):
 class MoviePost(models.Model):
     USER_ID = models.ForeignKey('auth.user', on_delete=models.CASCADE)
     post_id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=30)
-    movie_image = models.ImageField(upload_to='')
-    content = models.CharField(max_length=500)
-    NumOfPeople = models.IntegerField()
+    title = models.CharField(max_length=30) # 글제목
+    content = models.CharField(max_length=700) # 글내용
+    movie_image = models.CharField(max_length=100) # 글 이미지 url
+    movie_link = models.CharField(max_length=100) # 영화정보 상세 url
+    NumOfPeople = models.IntegerField() # 모집인원
+    gather_date = models.DateTimeField(blank = False, null = False) #모집날짜
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    gather_date = models.DateTimeField(blank = False, null = False)
-
-    def __str__(self):
-        return self.post_id
+    
+ 
