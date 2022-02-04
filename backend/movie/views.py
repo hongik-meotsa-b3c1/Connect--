@@ -11,9 +11,11 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import status
 from django.http import Http404
+from rest_framework.permissions import AllowAny
 
 
 class MovieInfoAPIView(APIView):
+    permission_classes = [AllowAny]
 
     def get(self,request):
             config_secret_debug = json.loads(open(settings.SECRET_DEBUG_FILE).read())
@@ -61,6 +63,8 @@ class MovieInfoAPIView(APIView):
 
 
 class MovieDetailAPIView(APIView):
+    permission_classes = [AllowAny]
+
     def get_object(self, pk):
         try:
             return MovieInfo.objects.get(pk=pk)
@@ -69,6 +73,7 @@ class MovieDetailAPIView(APIView):
 
     def get(self, request, pk):
         movie = self.get_object(pk)
+        
         serializer = MovieInfoSerializer(movie)
         return Response(serializer.data)
 

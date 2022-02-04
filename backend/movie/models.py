@@ -14,7 +14,7 @@ class MovieInfo(models.Model):
 
 
 class MoviePost(models.Model):
-    USER_ID = models.ForeignKey('auth.user', on_delete=models.CASCADE)
+    USER_ID = models.ForeignKey('accounts.user', on_delete=models.CASCADE)
     post_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=30) # 글제목
     content = models.CharField(max_length=700) # 글내용
