@@ -3,24 +3,31 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.shortcuts import resolve_url
 
-# Create your models here.
+
+class Classnet(models.Model):
+    classnet = models.BooleanField(default=False)
+    classnetid=models.CharField(unique=True, default='', max_length=100, null=False, blank=False)
+    classnetpw=models.CharField(default='', max_length=100, null=False, blank=False)
+
+
 class User(AbstractUser):
-    #아이디 암호 이메일 이름
-    avatar = models.ImageField(blank=True, upload_to="accounts/avatar/%y/%m", 
-    help_text="48px * 48px 크기의 png/jpg 파일을 업로드해주세요")
-    #classnet_id = models.CharField(max_length=150)
-    #classnet_pw = models.CharField(max_length=150)
-    # 수정수정수정
+    # 기본 : 아이디(username) 암호(password) 이메일(nickname)
 
 
-    @property
-    def name(self):
-        return f"{self.first_name} {self.last_name}"
+    
+    nickname = models.CharField(default='', max_length=100, null=False, blank=False)
+    classnetId = models.CharField(unique=True, default='',max_length=100, null=False, blank=False)
+    #is_active = models.BooleanField(default=False)
+    
 
-    @property
-    def avatar_url(self):
-        if self.avatar:
-            return self.avatar.url
-        else:
-            return resolve_url("pydenticon_image", self.username)
+    # avatar = models.ImageField(blank=True, upload_to="accounts/avatar/%y/%m", 
+    # help_text="48px * 48px 크기의 png/jpg 파일을 업로드해주세요")
+    # @property
+    # def avatar_url(self):
+    #     if self.avatar:
+    #         return self.avatar.url
+    #     else:
+    #         return resolve_url("pydenticon_image", self.username)
+
+
 
