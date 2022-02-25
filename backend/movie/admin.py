@@ -11,9 +11,10 @@ class MovieInfoAdmin(admin.ModelAdmin):
 
 @admin.register(MoviePost)
 class MoviePostAdmin(admin.ModelAdmin):
-    list_display=["post_id","title", "image"]
-    list_display_links = ["post_id"]
+    pass
+    # list_display=["post_id","title", "image"]
+    # list_display_links = ["post_id"]
 
-    def image(self, moviePost):
-        return mark_safe(f"<img src={moviePost.movie_image} style='width: 100px;' />")
+    # def image(self, moviePost):
+    #     return mark_safe(f"<img src={moviePost.movie_image} style='width: 100px;' />")
     

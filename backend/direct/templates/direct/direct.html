@@ -1,0 +1,113 @@
+
+
+{% load static %}
+
+
+  <div class="columns is-mobile">
+  
+
+  <div class="column is-one-quarter">
+  <aside class="menu">
+    <h1 class="title is-2">
+    Messages
+    </h1>
+  <ul style="overflow-y: scroll; height: 500px" class="menu-list">
+
+
+첫번째영역
+{% for message in messages %}
+<a class="{% if active_direct == message.user.username %}is-active{% endif %}" href="{% url 'directs' message.user.username %}">
+<div class="box">
+  <article class="media">
+ 
+    <div class="media-content">
+
+      <div class="content">
+        <p>
+          <strong>메세지 자체 유저{{ message.user.username }}</strong>
+        </p>
+      </div>
+
+      <div class="content">
+        {% if message.unread %}
+        안 읽은 메세지
+        <p style="font-weight: bold; color: red;">
+          <i class="material-icons">mark_chat_unread</i> {{ message.unread }}
+        </p>
+        {% endif %}        
+      </div>
+
+    </div>
+  </article>
+</div>
+</a>
+{% endfor %}
+첫번째 영역 끝
+
+  </ul>
+  </aside>
+<br>
+<a href="{% url 'usersearch' %}" class="button is-success">New message</a>
+
+</div>
+
+<div class="column">
+
+<div style="overflow-y: scroll; height: 500px">
+
+두번재 다이렉트
+{% for direct in directs %}
+<div class="box">
+  <article class="media">
+    <div class="media-left">
+    </div>
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>보내는 사람{{ direct.sender.username }} </strong>  on: <strong><small>{{ direct.date|date:'N d G:i'}}</small></strong>
+        </p>
+        {{ direct.body }} 
+      </div>
+    </div>
+  </article>
+</div>
+{% endfor %}
+다이렉트 끝
+
+
+</div>
+
+
+
+<!--폼이다-->
+
+<form role="form" method="POST" action="{% url 'send_direct' %}">
+  {% csrf_token %}
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-64x64">
+      <img src="https://bulma.io/images/placeholders/128x128.png">
+    </p>
+  </figure>
+  <div class="media-content">
+    <input type="hidden" name="to_user" value="{{ active_direct }}">
+    <div class="field">
+      <p class="control">
+        <textarea class="textarea" name="body" placeholder="Add a comment..."></textarea>
+      </p>
+    </div>
+    <nav class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <button type="submit" name="action" class="button is-info">Send</buttom>
+        </div>
+      </div>
+    </nav>
+  </div>
+</article>
+</form>
+
+
+</div>
+</div>
+

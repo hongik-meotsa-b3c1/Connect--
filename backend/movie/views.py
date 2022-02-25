@@ -17,11 +17,12 @@ from rest_framework.permissions import AllowAny
 class MovieInfoAPIView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self,request):
+    def post(self,request):
             config_secret_debug = json.loads(open(settings.SECRET_DEBUG_FILE).read())
             client_id = config_secret_debug['NAVER']['CLIENT_ID']
             client_secret = config_secret_debug['NAVER']['CLIENT_SECRET']
-            q = request.GET.get('q')
+            req = json.loads(request.body.decode('utf-8'))
+            q = req['moviename']
             encText = urllib.parse.quote("{}".format(q))
             url = "https://openapi.naver.com/v1/search/movie?query=" + encText  # json 결과
             movie_api_request = urllib.request.Request(url)
@@ -33,6 +34,7 @@ class MovieInfoAPIView(APIView):
                 response_body = response.read()
                 result = json.loads(response_body.decode('utf-8'))
                 items = result.get('items')
+
 
                 context = {
                     'items':items
@@ -62,33 +64,35 @@ class MovieInfoAPIView(APIView):
                     return Response(serializer.errors)
 
 
-class MovieDetailAPIView(APIView):
-    permission_classes = [AllowAny]
+# class MovieDetailAPIView(APIView):
+#     permission_classes = [AllowAny]
 
-    def get_object(self, pk):
-        try:
-            return MovieInfo.objects.get(pk=pk)
-        except:
-            raise Http404
+#     def get_object(self, pk):
+#         try:
+#             return MovieInfo.objects.get(pk=pk)
+#         except:
+#             raise Http404
 
-    def get(self, request, pk):
-        movie = self.get_object(pk)
+#     def get(self, request, pk):
+#         movie = self.get_object(pk)
         
-        serializer = MovieInfoSerializer(movie)
-        return Response(serializer.data)
+#         serializer = MovieInfoSerializer(movie)
+#         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
-        movie = self.get_object(pk)
-        serializer = MovieInfoSerializer(movie, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request, pk, format=None):
+#         movie = self.get_object(pk)
+#         serializer = MovieInfoSerializer(movie, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        movie = self.get_object(pk)
-        movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, pk, format=None):
+#         movie = self.get_object(pk)
+#         movie.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
         
              
