@@ -27,5 +27,5 @@ class MoviePost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-#title content movie에 대한 pk NumOfPeople gather_data, username
+#title content 'movie에 대한 pk' NumOfPeople gather_data username
  
