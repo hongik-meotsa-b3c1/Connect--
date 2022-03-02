@@ -35,8 +35,6 @@ class SignupSerializer(serializers.ModelSerializer):
 
         return user
 
-      
-
     class Meta:
         model = User
         fields = ['pk', 'username', 'password', 'nickname', 'email', 'classnetId']

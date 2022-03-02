@@ -18,13 +18,15 @@ from rest_framework.permissions import AllowAny
 
 class MovieInfoAPIView(APIView):
     permission_classes = [AllowAny]
-
+    
     def post(self,request):
             config_secret_debug = json.loads(open(settings.SECRET_DEBUG_FILE).read())
             client_id = config_secret_debug['NAVER']['CLIENT_ID']
             client_secret = config_secret_debug['NAVER']['CLIENT_SECRET']
+            print(request.body)
             req = json.loads(request.body.decode('utf-8'))
             q = req['moviename']
+            print(q)
             encText = urllib.parse.quote("{}".format(q))
             url = "https://openapi.naver.com/v1/search/movie?yearfrom=2022&yearto=2022&query=" + encText  # json 결과
             movie_api_request = urllib.request.Request(url)
