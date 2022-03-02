@@ -53,6 +53,7 @@ class MovieInfoAPIView(APIView):
                         _MovieInfo.movie_pubDate=item.get('pubDate')
                         _MovieInfo.movie_image=item.get('image')
                         _MovieInfo.movie_userRating=item.get('userRating')
+                        _MovieInfo.movie_actor=item.get('actor')
                         _MovieInfo.save()
                         
                     
@@ -80,6 +81,7 @@ class PostWrite(APIView):
             print('movie탐색완료')
             print(movie)
             encText = urllib.parse.quote("{}".format(movie))
+            print(encText)
             url = "https://openapi.naver.com/v1/search/movie?yearfrom=2022&yearto=2022&query=" + encText  # json 결과
             movie_api_request = urllib.request.Request(url)
             movie_api_request.add_header("X-Naver-Client-Id", client_id)
@@ -90,7 +92,7 @@ class PostWrite(APIView):
                 response_body = response.read()
                 result = json.loads(response_body.decode('utf-8'))
                 items = result.get('items')
-
+    
 
                 context = {
                     'items':items
@@ -109,6 +111,10 @@ class PostWrite(APIView):
                         _MoviePost.movie_title=item.get('title').strip('</b>')
                         _MoviePost.movie_link=item.get('link')
                         _MoviePost.movie_image=item.get('image')    
+                        _MoviePost.movie_actor=item.get('actor')
+                        print(_MoviePost.movie_director)
+                        _MoviePost.movie_director=item.get('director')
+                        print(_MoviePost.movie_actor)
                         _MoviePost.save()
                         
                     
@@ -124,34 +130,44 @@ class PostWrite(APIView):
 
     
 
-# class MovieDetailAPIView(APIView):
-#     permission_classes = [AllowAny]
+class MovieDetailAPIView(APIView):
+    permission_classes = [AllowAny]
 
-#     def get_object(self, pk):
-#         try:
-#             return MovieInfo.objects.get(pk=pk)
-#         except:
-#             raise Http404
+    def get_object(self, pk):
+        try:
+            return MoviePost.objects.get(pk=pk)
+        except:
+            raise Http404
 
-#     def get(self, request, pk):
-#         movie = self.get_object(pk)
+    def get(self, request, pk):
+        movie = self.get_object(pk)
         
-#         serializer = MovieInfoSerializer(movie)
-#         return Response(serializer.data)
+        serializer = MoviePostSerializer(movie)
+        return Response(serializer.data)
 
-#     def put(self, request, pk, format=None):
-#         movie = self.get_object(pk)
-#         serializer = MovieInfoSerializer(movie, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk, format=None):
+        movie = self.get_object(pk)
+        serializer = MoviePostSerializer(movie, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#     def delete(self, request, pk, format=None):
-#         movie = self.get_object(pk)
-#         movie.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, pk, format=None):
+        movie = self.get_object(pk)
+        print('작동')
+        print(movie)
+        movie.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class PostListAPIView(APIView):
+    permission_classes = [AllowAny]
 
+    def get(self, request):
+        serializer = MoviePostSerializer(MoviePost.objects.all(), many=True)
+        return Response(serializer.data)
+    
+    
 
 
         

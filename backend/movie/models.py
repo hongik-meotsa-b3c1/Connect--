@@ -8,7 +8,7 @@ class MovieInfo(models.Model):
     movie_director = models.CharField(max_length=30)
     movie_pubDate = models.CharField(max_length=20)
     movie_userRating = models.FloatField()
-    
+    movie_actor=models.CharField(null=False,max_length=1000,default='')
     def __str__(self):
     	return self.movie_title
 
@@ -23,7 +23,8 @@ class MoviePost(models.Model):
     movie_link = models.CharField(max_length=100) # 영화정보 상세 url
     NumOfPeople = models.IntegerField() # 모집인원
     gather_date = models.DateTimeField(blank = False, null = False) #모집날짜
-
+    movie_director = models.CharField(null=False,max_length=1000,default='')
+    movie_actor=models.CharField(null=False,max_length=1000,default='')
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now=True)
     
