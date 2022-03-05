@@ -77,12 +77,17 @@ class PostWrite(APIView):
             client_secret = config_secret_debug['NAVER']['CLIENT_SECRET']
             req = json.loads(request.body.decode('utf-8'))
             # movie_id 받아옴
-            q = req['movie_id']
+            #q = req['movie_id']
+            q = req['movie_title']
             # MovieInfo db에서 movie_id 가진 객체 탐색
-            movie=get_object_or_404(MovieInfo,pk=q)
+            #movie=get_object_or_404(MovieInfo,pk=q)
+
             print('movie탐색완료')
-            print(movie)
-            encText = urllib.parse.quote("{}".format(movie))
+            print(q)
+
+            #print(movie)
+            #encText = urllib.parse.quote("{}".format(movie))
+            encText = urllib.parse.quote("{}".format(q))
             print(encText)
             url = "https://openapi.naver.com/v1/search/movie?yearfrom=2022&yearto=2022&query=" + encText  # json 결과
             movie_api_request = urllib.request.Request(url)
@@ -94,7 +99,7 @@ class PostWrite(APIView):
                 response_body = response.read()
                 result = json.loads(response_body.decode('utf-8'))
                 items = result.get('items')
-    
+
 
                 context = {
                     'items':items
@@ -114,6 +119,7 @@ class PostWrite(APIView):
                         _MoviePost.movie_link=item.get('link')
                         _MoviePost.movie_image=item.get('image')    
                         _MoviePost.movie_actor=item.get('actor')
+                        
                         print(_MoviePost.movie_director)
                         _MoviePost.movie_director=item.get('director')
                         print(_MoviePost.movie_actor)
