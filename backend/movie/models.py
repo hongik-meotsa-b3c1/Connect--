@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class MovieInfo(models.Model): 
@@ -14,8 +15,7 @@ class MovieInfo(models.Model):
 
 
 class MoviePost(models.Model):
-    # USER_ID = models.ForeignKey('accounts.user', on_delete=models.CASCADE)
-    # nickname = models.CharField(max_length=100)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="my_post_set", on_delete=models.CASCADE)
     title = models.CharField(max_length=30) # 글제목
     content = models.CharField(max_length=700) # 글내용
     movie_title = models.CharField(max_length=700)
@@ -24,9 +24,8 @@ class MoviePost(models.Model):
     NumOfPeople = models.IntegerField() # 모집인원
     gather_date = models.DateTimeField(blank = False, null = False) #모집날짜
     movie_director = models.CharField(null=False,max_length=1000,default='')
-    movie_actor=models.CharField(null=False,max_length=1000,default='')
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
 #title content 'movie에 대한 pk' NumOfPeople gather_data username
  

@@ -12,12 +12,9 @@ class Classnet(models.Model):
 
 class User(AbstractUser):
     # 기본 : 아이디(username) 암호(password) 이메일(nickname)
-
-
     
     nickname = models.CharField(default='', max_length=100, null=False, blank=False)
     classnetId = models.CharField(unique=True, default='',max_length=100, null=False, blank=False)
-    #is_active = models.BooleanField(default=False)
     
 
     # avatar = models.ImageField(blank=True, upload_to="accounts/avatar/%y/%m", 

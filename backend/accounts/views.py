@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from .models import User,Classnet
 from django.http import Http404, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+import requests
+import json
+
 
 
 
@@ -38,6 +41,15 @@ class ClassnetView(ListCreateAPIView):
 
 
     
+# class ClassnetView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self,request):
+#         req = json.loads(request.body.decode('utf-8'))
+#         classnet_id = req['classnet_id']
+#         classnet_pw = req['classnet_pw']
+#         classnet_ok = signin_with_hongik(classnet_id,classnet_pw)
+#         if classnet_ok==True:
 
 
 

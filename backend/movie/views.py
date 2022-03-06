@@ -68,24 +68,25 @@ class MovieInfoAPIView(APIView):
                     print("error")
                     return Response(serializer.errors)
     
-class PostWrite(APIView):
+
+    
+class PostListAPIView(APIView):
     permission_classes = [AllowAny]
+
+    
+    def get(self, request):
+        serializer = MoviePostSerializer(MoviePost.objects.all(), many=True)
+        return Response(serializer.data)
 
     def post(self,request):
             config_secret_debug = json.loads(open(settings.SECRET_DEBUG_FILE).read())
             client_id = config_secret_debug['NAVER']['CLIENT_ID']
             client_secret = config_secret_debug['NAVER']['CLIENT_SECRET']
             req = json.loads(request.body.decode('utf-8'))
-            # movie_id 받아옴
             #q = req['movie_id']
             q = req['movie_title']
             # MovieInfo db에서 movie_id 가진 객체 탐색
             #movie=get_object_or_404(MovieInfo,pk=q)
-
-            print('movie탐색완료')
-            print(q)
-
-            #print(movie)
             #encText = urllib.parse.quote("{}".format(movie))
             encText = urllib.parse.quote("{}".format(q))
             print(encText)
@@ -99,18 +100,12 @@ class PostWrite(APIView):
                 response_body = response.read()
                 result = json.loads(response_body.decode('utf-8'))
                 items = result.get('items')
-
-
-                context = {
-                    'items':items
-                }
+                context = {'items':items }
                 try:
-                    # qs = MovieInfo.objects.all()
-                    # qs.delete()
-                    
                     for item in items:
                         print('for문실행')
                         _MoviePost = MoviePost()
+                        _MoviePost.author = self.request.user
                         _MoviePost.title=req['title']
                         _MoviePost.content=req['content']
                         _MoviePost.NumOfPeople=req['NumOfPeople']
@@ -118,26 +113,21 @@ class PostWrite(APIView):
                         _MoviePost.movie_title=item.get('title').strip('</b>')
                         _MoviePost.movie_link=item.get('link')
                         _MoviePost.movie_image=item.get('image')    
-                        _MoviePost.movie_actor=item.get('actor')
-                        
-                        print(_MoviePost.movie_director)
                         _MoviePost.movie_director=item.get('director')
-                        print(_MoviePost.movie_actor)
                         _MoviePost.save()
+
+                    MoviePost_last = MoviePost.objects.last()
+                    MoviePost_id = MoviePost_last.id
                         
-                    
-                    return Response("post save success")  
- 
-
-                  
-
+                    return Response(MoviePost_id)  
 
                 except:
                     print("error")
-                    return Response(error) 
+                    return Response(error)
 
     
-
+                    
+   
 class MovieDetailAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -167,13 +157,14 @@ class MovieDetailAPIView(APIView):
         print(movie)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-class PostListAPIView(APIView):
-    permission_classes = [AllowAny]
 
-    def get(self, request):
-        serializer = MoviePostSerializer(MoviePost.objects.all(), many=True)
-        return Response(serializer.data)
+    
+# class PostListAPIView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def get(self, request):
+#         serializer = MoviePostSerializer(MoviePost.objects.all(), many=True)
+#         return Response(serializer.data)
     
     
 
