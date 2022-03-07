@@ -158,14 +158,7 @@ class MovieDetailAPIView(APIView):
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    
-# class PostListAPIView(APIView):
-#     permission_classes = [AllowAny]
 
-#     def get(self, request):
-#         serializer = MoviePostSerializer(MoviePost.objects.all(), many=True)
-#         return Response(serializer.data)
-    
     
 
 

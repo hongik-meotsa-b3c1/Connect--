@@ -10,5 +10,4 @@ urlpatterns = [
     url(r'posts/(?P<pk>[0-9]+)/', views.MovieDetailAPIView.as_view(), name='detail'),
     #url(r'posts/(?P<pk>[0-9]+)/commnets/', views.MovieDetailAPIView.as_view(), name='detail'),
 
-
 ]
