@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import MovieInfo, MoviePost
+from .models import MovieInfo, MoviePost, Comment
 from django.contrib.auth import get_user_model
 
 class MovieInfoSerializer(ModelSerializer):
@@ -20,4 +20,11 @@ class MoviePostSerializer(ModelSerializer):
         model=MoviePost
         fields='__all__'
     
+
+class CommentSerializer(ModelSerializer):
+    author = AuthorSerializer(read_only = True)
+
+    class Meta:
+        model = Comment
+        fields=["id","author", "message","created_at" ]
     

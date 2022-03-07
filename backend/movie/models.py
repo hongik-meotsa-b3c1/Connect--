@@ -10,7 +10,7 @@ class MovieInfo(models.Model):
     movie_pubDate = models.CharField(max_length=20)
     movie_userRating = models.FloatField()
     movie_actor=models.CharField(null=False,max_length=1000,default='')
-    def __str__(self):
+    def getTitle(self):
     	return self.movie_title
 
 
@@ -26,6 +26,17 @@ class MoviePost(models.Model):
     movie_director = models.CharField(null=False,max_length=1000,default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     
-#title content 'movie에 대한 pk' NumOfPeople gather_data username
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(MoviePost, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+
+    class Meta:
+        ordering = ["-id"]
+
  
