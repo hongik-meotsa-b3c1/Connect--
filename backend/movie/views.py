@@ -83,13 +83,19 @@ class PostListAPIView(APIView):
             client_id = config_secret_debug['NAVER']['CLIENT_ID']
             client_secret = config_secret_debug['NAVER']['CLIENT_SECRET']
             req = json.loads(request.body.decode('utf-8'))
-            #q = req['movie_id']
-            q = req['movie_title']
+            q = req['movie_id']
+            # q = req['movie_title']
             # MovieInfo db에서 movie_id 가진 객체 탐색
-            #movie=get_object_or_404(MovieInfo,pk=q)
-            #encText = urllib.parse.quote("{}".format(movie))
-            encText = urllib.parse.quote("{}".format(q))
-            print(encText)
+            movie=MovieInfo.objects.get(pk=q)
+            print("movie:" ,movie)
+            print("moviename:",movie.getTitle())
+            moviename=movie.getTitle().strip('</b>')
+            print(moviename)
+            # moviename=movie['movie_title'].strip('</b>')
+            # print("moviename: ", moviename)
+            encText = urllib.parse.quote("{}".format(moviename))
+            # encText = urllib.parse.quote("{}".format(q))
+            # print(encText)
             url = "https://openapi.naver.com/v1/search/movie?yearfrom=2022&yearto=2022&query=" + encText  # json 결과
             movie_api_request = urllib.request.Request(url)
             movie_api_request.add_header("X-Naver-Client-Id", client_id)
@@ -103,7 +109,7 @@ class PostListAPIView(APIView):
                 context = {'items':items }
                 try:
                     for item in items:
-                        print('for문실행')
+                        # print('for문실행')
                         _MoviePost = MoviePost()
                         _MoviePost.author = self.request.user
                         _MoviePost.title=req['title']

@@ -10,7 +10,7 @@ class MovieInfo(models.Model):
     movie_pubDate = models.CharField(max_length=20)
     movie_userRating = models.FloatField()
     movie_actor=models.CharField(null=False,max_length=1000,default='')
-    def __str__(self):
+    def getTitle(self):
     	return self.movie_title
 
 
