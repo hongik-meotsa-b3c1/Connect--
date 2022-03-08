@@ -137,6 +137,7 @@ class MovieDetailAPIView(APIView):
             raise Http404
 
     def get(self, request, pk):
+        print("이거동작함2")
         movie = self.get_object(pk)
         
         serializer = MoviePostSerializer(movie)
@@ -162,6 +163,12 @@ class MovieDetailAPIView(APIView):
 class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    print("CommnetViewSet동작")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 
     def get_queryset(self):
         qs = super().get_queryset()

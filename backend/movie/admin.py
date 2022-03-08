@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MovieInfo,MoviePost
+from .models import MovieInfo,MoviePost,Comment
 from django.utils.safestring import mark_safe
 
 
@@ -18,3 +18,6 @@ class MoviePostAdmin(admin.ModelAdmin):
     # def image(self, moviePost):
     #     return mark_safe(f"<img src={moviePost.movie_image} style='width: 100px;' />")
     
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass

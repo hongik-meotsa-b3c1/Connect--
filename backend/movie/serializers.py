@@ -23,8 +23,9 @@ class MoviePostSerializer(ModelSerializer):
 
 class CommentSerializer(ModelSerializer):
     author = AuthorSerializer(read_only = True)
+    print("CommnetSerializer동작")
 
     class Meta:
         model = Comment
-        fields=["id","author", "message","created_at" ]
+        fields=['id','author', 'message','created_at']
     
